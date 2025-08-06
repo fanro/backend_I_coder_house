@@ -64,13 +64,6 @@ app.post('/api/products', async (req, res) => {
 });
 
 app.put('/api/products/:pid', async (req, res) => {
-  let productos = await ProductManager.getProducts();
-
-  let producto = productos.find((p) => p.id == req.params.pid);
-  if (!producto) {
-    return res.status(404).send({ error: 'Producto no encontrado' });
-  }
-
   let camposActualizar = req.body;
   try {
     let productoActualizado = await ProductManager.updateProduct(
@@ -84,13 +77,6 @@ app.put('/api/products/:pid', async (req, res) => {
 });
 
 app.delete('/api/products/:pid', async (req, res) => {
-  let productos = await ProductManager.getProducts();
-
-  let producto = productos.find((p) => p.id == req.params.pid);
-  if (!producto) {
-    return res.status(404).send({ error: 'Producto no encontrado' });
-  }
-
   try {
     let resultado = await ProductManager.deleteProduct(req.params.pid);
     res.send(resultado);

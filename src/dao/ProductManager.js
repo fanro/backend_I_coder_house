@@ -72,7 +72,7 @@ class ProductManager {
 
     let index = productos.findIndex((p) => p.id == id);
     if (index === -1) {
-      throw new Error(`No existen productos con id ${id}`);
+      throw new Error(`No existe producto con id ${id}`);
     }
 
     let productoActualizado = { ...productos[index], ...camposActualizar };
@@ -91,7 +91,7 @@ class ProductManager {
 
     let index = productos.findIndex((p) => p.id == id);
     if (index === -1) {
-      throw new Error(`No existen productos con id ${id}`);
+      throw new Error(`No existe producto con id ${id}`);
     }
 
     productos.splice(index, 1);
