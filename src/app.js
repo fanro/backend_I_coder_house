@@ -124,6 +124,17 @@ app.post('/api/carts', async (req, res) => {
   }
 });
 
+app.post('/api/carts/:cid/product/:pid', async (req, res) => {
+  let { cid, pid } = req.params;
+
+  try {
+    let cart = await CartsManager.addProductToCart(cid, pid);
+    res.send(cart);
+  } catch (error) {
+    return res.status(400).send({ error: error.message });
+  }
+});
+
 const server = app.listen(PORT, () => {
   console.log(`Server on line en pueto ${PORT}`);
 });

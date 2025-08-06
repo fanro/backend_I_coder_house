@@ -51,6 +51,30 @@ class CartsManager {
 
     return nuevoCarrito;
   }
+
+  static async addProductToCart(cid, pid, quantity = 1) {
+    let carts = await this.getCarts();
+    let cart = carts.find((c) => c.id == cid);
+    if (!cart) {
+      throw new Error(`No existe carrito con id ${cid}`);
+    }
+
+    let producto = await ProductsManager.getProductById(pid);
+    if (!producto) {
+      throw new Error(`No existe producto con id ${pid}`);
+    }
+
+    let productIndex = cart.products.findIndex((p) => p.product == pid);
+    if (productIndex === -1) {
+      cart.products.push({ product: pid, quantity });
+    } else {
+      cart.products[productIndex].quantity += quantity;
+    }
+
+    await fs.promises.writeFile(this.rutaDatos, JSON.stringify(carts, null, 5));
+
+    return cart;
+  }
 }
 
 module.exports = { CartsManager };
