@@ -101,10 +101,27 @@ app.delete('/api/products/:pid', async (req, res) => {
 
 // ************************************************************************************
 // CARTS
-
 app.get('/api/carts', async (req, res) => {
   let carts = await CartsManager.getCarts();
   res.send(carts);
+});
+
+app.get('/api/carts/:cid', async (req, res) => {
+  try {
+    let cart = await CartsManager.getCartById(req.params.cid);
+    res.send(cart);
+  } catch (error) {
+    return res.status(404).send({ error: error.message });
+  }
+});
+
+app.post('/api/carts', async (req, res) => {
+  try {
+    let nuevoCarrito = await CartsManager.addCart();
+    res.send(nuevoCarrito);
+  } catch (error) {
+    return res.status(400).send({ error: error.message });
+  }
 });
 
 const server = app.listen(PORT, () => {
