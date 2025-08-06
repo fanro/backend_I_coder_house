@@ -85,6 +85,24 @@ class ProductsManager {
 
     return productoActualizado;
   }
+
+  static async deleteProduct(id) {
+    let productos = await this.getProducts();
+
+    let index = productos.findIndex((p) => p.id == id);
+    if (index === -1) {
+      throw new Error(`No existen productos con id ${id}`);
+    }
+
+    productos.splice(index, 1);
+
+    await fs.promises.writeFile(
+      this.rutaDatos,
+      JSON.stringify(productos, null, 5)
+    );
+
+    return { message: `Producto con id ${id} eliminado` };
+  }
 }
 
 module.exports = { ProductsManager };

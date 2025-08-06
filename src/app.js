@@ -81,6 +81,22 @@ app.put('/api/products/:pid', async (req, res) => {
   }
 });
 
+app.delete('/api/products/:pid', async (req, res) => {
+  let productos = await ProductsManager.getProducts();
+
+  let producto = productos.find((p) => p.id == req.params.pid);
+  if (!producto) {
+    return res.status(404).send({ error: 'Producto no encontrado' });
+  }
+
+  try {
+    let resultado = await ProductsManager.deleteProduct(req.params.pid);
+    res.send(resultado);
+  } catch (error) {
+    return res.status(400).send({ error: error.message });
+  }
+});
+
 const server = app.listen(PORT, () => {
   console.log(`Server on line en pueto ${PORT}`);
 });
