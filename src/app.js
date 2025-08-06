@@ -17,13 +17,13 @@ app.get('/', (req, res) => {
 // ************************************************************************************
 // PRODUCTS
 app.get('/api/products', async (req, res) => {
-  let productos = await ProductsManager.getProducts();
+  let productos = await ProductManager.getProducts();
   res.send(productos);
 });
 
 app.get('/api/products/:pid', async (req, res) => {
   try {
-    let producto = await ProductsManager.getProductById(req.params.pid);
+    let producto = await ProductManager.getProductById(req.params.pid);
     res.send(producto);
   } catch (error) {
     return res.status(404).send({ error: error.message });
@@ -46,7 +46,7 @@ app.post('/api/products', async (req, res) => {
   }
 
   try {
-    let nuevoProducto = await ProductsManager.addProduct(
+    let nuevoProducto = await ProductManager.addProduct(
       title,
       description,
       code,
@@ -64,7 +64,7 @@ app.post('/api/products', async (req, res) => {
 });
 
 app.put('/api/products/:pid', async (req, res) => {
-  let productos = await ProductsManager.getProducts();
+  let productos = await ProductManager.getProducts();
 
   let producto = productos.find((p) => p.id == req.params.pid);
   if (!producto) {
@@ -73,7 +73,7 @@ app.put('/api/products/:pid', async (req, res) => {
 
   let camposActualizar = req.body;
   try {
-    let productoActualizado = await ProductsManager.updateProduct(
+    let productoActualizado = await ProductManager.updateProduct(
       req.params.pid,
       camposActualizar
     );
@@ -84,7 +84,7 @@ app.put('/api/products/:pid', async (req, res) => {
 });
 
 app.delete('/api/products/:pid', async (req, res) => {
-  let productos = await ProductsManager.getProducts();
+  let productos = await ProductManager.getProducts();
 
   let producto = productos.find((p) => p.id == req.params.pid);
   if (!producto) {
@@ -92,7 +92,7 @@ app.delete('/api/products/:pid', async (req, res) => {
   }
 
   try {
-    let resultado = await ProductsManager.deleteProduct(req.params.pid);
+    let resultado = await ProductManager.deleteProduct(req.params.pid);
     res.send(resultado);
   } catch (error) {
     return res.status(400).send({ error: error.message });
@@ -102,13 +102,13 @@ app.delete('/api/products/:pid', async (req, res) => {
 // ************************************************************************************
 // CARTS
 app.get('/api/carts', async (req, res) => {
-  let carts = await CartsManager.getCarts();
+  let carts = await CartManager.getCarts();
   res.send(carts);
 });
 
 app.get('/api/carts/:cid', async (req, res) => {
   try {
-    let cart = await CartsManager.getCartById(req.params.cid);
+    let cart = await CartManager.getCartById(req.params.cid);
     res.send(cart);
   } catch (error) {
     return res.status(404).send({ error: error.message });
@@ -117,7 +117,7 @@ app.get('/api/carts/:cid', async (req, res) => {
 
 app.post('/api/carts', async (req, res) => {
   try {
-    let nuevoCarrito = await CartsManager.addCart();
+    let nuevoCarrito = await CartManager.addCart();
     res.send(nuevoCarrito);
   } catch (error) {
     return res.status(400).send({ error: error.message });
@@ -128,10 +128,7 @@ app.post('/api/carts/:cid/product/:pid', async (req, res) => {
   let { cid, pid } = req.params;
 
   try {
-    let cart = await CartsManager.addProductToCart(
-      parseInt(cid),
-      parseInt(pid)
-    );
+    let cart = await CartManager.addProductToCart(parseInt(cid), parseInt(pid));
     res.send(cart);
   } catch (error) {
     return res.status(400).send({ error: error.message });
