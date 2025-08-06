@@ -23,7 +23,7 @@ class CartManager {
     cart.products = await Promise.all(
       cart.products.map(async (item) => {
         return {
-          product: await ProductsManager.getProductById(item.product),
+          product: await ProductManager.getProductById(item.product),
           quantity: item.quantity,
         };
       })
