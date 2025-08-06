@@ -1,6 +1,8 @@
 const express = require('express');
 const { ProductsManager } = require('./dao/ProductsManager');
+const { CartsManager } = require('./dao/CartsManager');
 ProductsManager.rutaDatos = './src/data/products.json';
+CartsManager.rutaDatos = './src/data/carts.json';
 
 const PORT = 8080;
 const app = express();
@@ -20,12 +22,12 @@ app.get('/api/products', async (req, res) => {
 });
 
 app.get('/api/products/:pid', async (req, res) => {
-  let productos = await ProductsManager.getProducts();
-  let producto = productos.find((p) => p.id == req.params.pid);
-  if (!producto) {
-    return res.status(404).send({ error: 'Producto no encontrado' });
+  try {
+    let producto = await ProductsManager.getProductById(req.params.pid);
+    res.send(producto);
+  } catch (error) {
+    return res.status(404).send({ error: error.message });
   }
-  res.send(producto);
 });
 
 app.post('/api/products', async (req, res) => {
@@ -95,6 +97,14 @@ app.delete('/api/products/:pid', async (req, res) => {
   } catch (error) {
     return res.status(400).send({ error: error.message });
   }
+});
+
+// ************************************************************************************
+// CARTS
+
+app.get('/api/carts', async (req, res) => {
+  let carts = await CartsManager.getCarts();
+  res.send(carts);
 });
 
 const server = app.listen(PORT, () => {

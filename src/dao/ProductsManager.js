@@ -16,7 +16,7 @@ class ProductsManager {
 
     let producto = productos.find((p) => p.id == id);
     if (!producto) {
-      return `No existen productos con id ${id}`;
+      throw new Error(`No existen producto con id ${id}`);
     }
 
     return producto;
