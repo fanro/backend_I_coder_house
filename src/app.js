@@ -1,8 +1,8 @@
 const express = require('express');
-const { ProductsManager } = require('./dao/ProductsManager');
-const { CartsManager } = require('./dao/CartsManager');
-ProductsManager.rutaDatos = './src/data/products.json';
-CartsManager.rutaDatos = './src/data/carts.json';
+const { ProductManager } = require('./dao/ProductManager');
+const { CartManager } = require('./dao/CartManager');
+ProductManager.rutaDatos = './src/data/products.json';
+CartManager.rutaDatos = './src/data/carts.json';
 
 const PORT = 8080;
 const app = express();
@@ -128,7 +128,10 @@ app.post('/api/carts/:cid/product/:pid', async (req, res) => {
   let { cid, pid } = req.params;
 
   try {
-    let cart = await CartsManager.addProductToCart(cid, pid);
+    let cart = await CartsManager.addProductToCart(
+      parseInt(cid),
+      parseInt(pid)
+    );
     res.send(cart);
   } catch (error) {
     return res.status(400).send({ error: error.message });

@@ -1,7 +1,7 @@
 const fs = require('fs');
-const { ProductsManager } = require('./ProductsManager');
+const { ProductManager } = require('./ProductManager');
 
-class CartsManager {
+class CartManager {
   static rutaDatos = '';
 
   static async getCarts() {
@@ -59,7 +59,7 @@ class CartsManager {
       throw new Error(`No existe carrito con id ${cid}`);
     }
 
-    let producto = await ProductsManager.getProductById(pid);
+    let producto = await ProductManager.getProductById(pid);
     if (!producto) {
       throw new Error(`No existe producto con id ${pid}`);
     }
@@ -77,4 +77,4 @@ class CartsManager {
   }
 }
 
-module.exports = { CartsManager };
+module.exports = { CartManager };

@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-class ProductsManager {
+class ProductManager {
   static rutaDatos = '';
 
   static async getProducts() {
@@ -105,4 +105,4 @@ class ProductsManager {
   }
 }
 
-module.exports = { ProductsManager };
+module.exports = { ProductManager };
