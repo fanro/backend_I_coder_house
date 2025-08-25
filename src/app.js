@@ -1,6 +1,7 @@
 const express = require('express');
 const { ProductManager } = require('./dao/ProductManager');
 const { CartManager } = require('./dao/CartManager');
+const { logger } = require('./middlewares/logger.js');
 
 // Importar router principal
 const apiRouter = require('./routes/index');
@@ -13,6 +14,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(logger);
 
 app.use('/api', apiRouter);
 
