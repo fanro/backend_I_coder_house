@@ -39,6 +39,28 @@ router.post('/', async (req, res) => {
     return res.status(400).send({ error: 'Faltan datos del producto' });
   }
 
+  if (
+    typeof title !== 'string' ||
+    typeof description !== 'string' ||
+    typeof code !== 'string' ||
+    typeof price !== 'number' ||
+    typeof status !== 'boolean' ||
+    typeof stock !== 'number' ||
+    typeof category !== 'string'
+  ) {
+    return res.status(400).send({ error: 'Tipos de datos incorrectos' });
+  }
+
+  if (
+    thumbnails &&
+    (!Array.isArray(thumbnails) ||
+      !thumbnails.every((thumb) => typeof thumb === 'string'))
+  ) {
+    return res
+      .status(400)
+      .send({ error: 'Thumbnails debe ser un array de strings' });
+  }
+
   try {
     let nuevoProducto = await ProductManager.addProduct(
       title,
