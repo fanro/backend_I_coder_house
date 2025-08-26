@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { ProductManager } = require('../dao/ProductManager');
 
 router.get('/pruebas', (req, res) => {
   let { nombre } = req.query;
@@ -14,8 +15,32 @@ router.get('/pruebas', (req, res) => {
     titulo,
     mensaje,
   });
-  // res.setHeader('Content-Type','application/json')
-  // res.status(200).json({})
+});
+
+router.get('/productos', async (req, res) => {
+  let productos = [];
+
+  let { orden, total } = req.query;
+
+  if (!orden) {
+    orden = '1234';
+  }
+
+  if (!total) {
+    total = '4500';
+  }
+
+  try {
+    productos = await ProductManager.getProducts();
+  } catch (error) {
+    console.error('Error al obtener productos:', error);
+  }
+
+  res.render('productos', {
+    productos,
+    orden,
+    total,
+  });
 });
 
 module.exports = router;
