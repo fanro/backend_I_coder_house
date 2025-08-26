@@ -39,16 +39,29 @@ router.post('/', async (req, res) => {
     return res.status(400).send({ error: 'Faltan datos del producto' });
   }
 
-  if (
-    typeof title !== 'string' ||
-    typeof description !== 'string' ||
-    typeof code !== 'string' ||
-    typeof price !== 'number' ||
-    typeof status !== 'boolean' ||
-    typeof stock !== 'number' ||
-    typeof category !== 'string'
-  ) {
-    return res.status(400).send({ error: 'Tipos de datos incorrectos' });
+  const typeErrors = [];
+
+  if (typeof title !== 'string')
+    typeErrors.push(`title debe ser string, recibido: ${typeof title}`);
+  if (typeof description !== 'string')
+    typeErrors.push(
+      `description debe ser string, recibido: ${typeof description}`
+    );
+  if (typeof code !== 'string')
+    typeErrors.push(`code debe ser string, recibido: ${typeof code}`);
+  if (typeof price !== 'number')
+    typeErrors.push(`price debe ser number, recibido: ${typeof price}`);
+  if (typeof status !== 'boolean')
+    typeErrors.push(`status debe ser boolean, recibido: ${typeof status}`);
+  if (typeof stock !== 'number')
+    typeErrors.push(`stock debe ser number, recibido: ${typeof stock}`);
+  if (typeof category !== 'string')
+    typeErrors.push(`category debe ser string, recibido: ${typeof category}`);
+
+  if (typeErrors.length > 0) {
+    return res
+      .status(400)
+      .send({ error: `Tipos de datos incorrectos: ${typeErrors.join(', ')}` });
   }
 
   if (
