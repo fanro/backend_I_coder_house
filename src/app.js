@@ -3,6 +3,7 @@ const { ProductManager } = require('./dao/ProductManager');
 const { CartManager } = require('./dao/CartManager');
 const { logger } = require('./middlewares/logger.js');
 const { engine } = require('express-handlebars');
+const { Server } = require('socket.io');
 
 // Importar router principal
 const apiRouter = require('./routes/apiIndex');
@@ -31,3 +32,6 @@ app.get('/', (req, res) => {
 const server = app.listen(PORT, () => {
   console.log(`Server on line en pueto ${PORT}`);
 });
+
+// socket.io
+const io = new Server(server);
