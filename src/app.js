@@ -22,8 +22,16 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './src/views');
 
-app.use('/api', apiRouter);
-app.use('/views', viewsRouter);
+// paso socket.io para usar en rutas
+app.use(
+  '/api',
+  (req, res, next) => {
+    req.socket = io;
+    next();
+  },
+  apiRouter
+);
+app.use('/', viewsRouter);
 
 app.get('/', (req, res) => {
   res.send('Bienvenidos');

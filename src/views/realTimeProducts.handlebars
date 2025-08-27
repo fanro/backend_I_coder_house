@@ -1,0 +1,10 @@
+<h2>Productos</h2>
+<hr>
+
+<ul id="productos">
+    {{#each productos}}
+        <li>{{title}} - precio: <strong>{{price}}</strong></li>
+    {{/each}}
+</ul>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/rtp.js"></script>
