@@ -21,6 +21,7 @@ app.use(logger);
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './src/views');
+app.use(express.static('./src/public'));
 
 // paso socket.io para usar en rutas
 app.use(
@@ -43,3 +44,8 @@ const server = app.listen(PORT, () => {
 
 // socket.io
 const io = new Server(server);
+
+setInterval(() => {
+  let fecha = new Date().toISOString();
+  io.emit('fecha', fecha);
+}, 1000);
