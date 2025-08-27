@@ -23,6 +23,28 @@ app.set('view engine', 'handlebars');
 app.set('views', './src/views');
 app.use(express.static('./src/public'));
 
+const server = app.listen(PORT, () => {
+  console.log(`Server on line en pueto ${PORT}`);
+});
+
+const io = new Server(server);
+
+io.on('connection', async (socket) => {
+  console.log('Cliente conectado:', socket.id);
+
+  // lista actual de productos al cliente que se conecta
+  try {
+    const productos = await ProductManager.getProducts();
+    socket.emit('productos-actualizados', productos);
+  } catch (error) {
+    console.error('Error al cargar productos iniciales:', error);
+  }
+
+  socket.on('disconnect', () => {
+    console.log('Cliente desconectado:', socket.id);
+  });
+});
+
 // paso socket.io para usar en rutas
 app.use(
   '/api',
@@ -37,13 +59,6 @@ app.use('/', viewsRouter);
 app.get('/', (req, res) => {
   res.send('Bienvenidos');
 });
-
-const server = app.listen(PORT, () => {
-  console.log(`Server on line en pueto ${PORT}`);
-});
-
-// socket.io
-const io = new Server(server);
 
 setInterval(() => {
   let fecha = new Date().toISOString();

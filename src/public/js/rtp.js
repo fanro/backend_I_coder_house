@@ -23,6 +23,7 @@ function createProductElement(producto) {
 
   li.innerHTML = `
         <h3 class="product-title">${producto.title}</h3>
+        <p class="product-description">${producto.description}</p>
         <div class="product-price">
             <span class="price-label">Precio:</span>
             <span class="price-value">$${producto.price}</span>

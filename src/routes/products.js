@@ -86,6 +86,15 @@ router.post('/', async (req, res) => {
       thumbnails
     );
 
+    // evento de producto agregado a todos los clientes
+    if (req.socket) {
+      req.socket.emit('producto-agregado', nuevoProducto);
+
+      // También emito la lista actualizada de productos a todos los clientes
+      const productos = await ProductManager.getProducts();
+      req.socket.emit('productos-actualizados', productos);
+    }
+
     res.send(nuevoProducto);
   } catch (error) {
     return res.status(400).send({ error: error.message });
@@ -100,6 +109,16 @@ router.put('/:pid', async (req, res) => {
       req.params.pid,
       camposActualizar
     );
+
+    // evento de producto actualizado a todos los clientes
+    if (req.socket) {
+      req.socket.emit('producto-actualizado', productoActualizado);
+
+      // También emito la lista actualizada de productos a todos los clientes
+      const productos = await ProductManager.getProducts();
+      req.socket.emit('productos-actualizados', productos);
+    }
+
     res.send(productoActualizado);
   } catch (error) {
     return res.status(400).send({ error: error.message });
@@ -109,7 +128,22 @@ router.put('/:pid', async (req, res) => {
 // DELETE /api/products/:pid - Eliminar producto
 router.delete('/:pid', async (req, res) => {
   try {
+    // Obtener el producto antes de eliminarlo para tener el ID
+    const productoAEliminar = await ProductManager.getProductById(
+      req.params.pid
+    );
+
     let resultado = await ProductManager.deleteProduct(req.params.pid);
+
+    // Emitir evento de producto eliminado a todos los clientes
+    if (req.socket) {
+      req.socket.emit('producto-eliminado', productoAEliminar.id);
+
+      // También emito la lista actualizada de productos a todos los clientes
+      const productos = await ProductManager.getProducts();
+      req.socket.emit('productos-actualizados', productos);
+    }
+
     res.send(resultado);
   } catch (error) {
     return res.status(400).send({ error: error.message });
