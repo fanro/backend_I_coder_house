@@ -8,6 +8,8 @@ const { Server } = require('socket.io');
 // Importar router principal
 const apiRouter = require('./routes/apiIndex');
 const viewsRouter = require('./routes/views');
+const { conectarDB } = require('./config/db.js');
+const { config } = require('./config/config.js');
 
 ProductManager.rutaDatos = './src/data/products.json';
 CartManager.rutaDatos = './src/data/carts.json';
@@ -26,6 +28,8 @@ app.use(express.static('./src/public'));
 const server = app.listen(PORT, () => {
   console.log(`Server on line en pueto ${PORT}`);
 });
+
+conectarDB(config.MONGO_URL, config.DB_NAME);
 
 const io = new Server(server);
 
