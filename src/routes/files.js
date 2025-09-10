@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { uploader } = require('../utils/utils.js');
+import { uploader } from '../utils/utils.js';
 
 router.post('/upload', uploader.single('imagen'), (req, res) => {
   if (!req.file) {
@@ -32,4 +32,4 @@ router.post('/upload', uploader.single('imagen'), (req, res) => {
   return res.status(200).json(datosRecibidos);
 });
 
-module.exports = router;
+export default router;

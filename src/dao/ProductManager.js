@@ -1,6 +1,6 @@
-const fs = require('fs');
+import fs from 'fs';
 
-class ProductManager {
+export class ProductManager {
   static rutaDatos = '';
 
   static async getProducts() {
@@ -104,5 +104,3 @@ class ProductManager {
     return { message: `Producto con id ${id} eliminado` };
   }
 }
-
-module.exports = { ProductManager };

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const conectarDB = async (url, dbName) => {
+export const conectarDB = async (url, dbName) => {
   try {
     await mongoose.connect(url, {
       dbName,
@@ -11,5 +11,3 @@ const conectarDB = async (url, dbName) => {
     console.log(`Error al conectar a db: ${error.message}`);
   }
 };
-
-module.exports = { conectarDB };

@@ -1,15 +1,15 @@
-const express = require('express');
-const { ProductManager } = require('./dao/ProductManager');
-const { CartManager } = require('./dao/CartManager');
-const { logger } = require('./middlewares/logger.js');
-const { engine } = require('express-handlebars');
-const { Server } = require('socket.io');
+import express from 'express';
+import { ProductManager } from './dao/ProductManager.js';
+import { CartManager } from './dao/CartManager.js';
+import { logger } from './middlewares/logger.js';
+import { engine } from 'express-handlebars';
+import { Server } from 'socket.io';
 
 // Importar router principal
-const apiRouter = require('./routes/apiIndex');
-const viewsRouter = require('./routes/views');
-const { conectarDB } = require('./config/db.js');
-const { config } = require('./config/config.js');
+import apiRouter from './routes/apiIndex.js';
+import viewsRouter from './routes/views.js';
+import { conectarDB } from './config/db.js';
+import { config } from './config/config.js';
 
 ProductManager.rutaDatos = './src/data/products.json';
 CartManager.rutaDatos = './src/data/carts.json';

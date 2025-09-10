@@ -1,5 +1,5 @@
-const express = require('express');
-const { CartManager } = require('../dao/CartManager');
+import express from 'express';
+import { CartManager } from '../dao/CartManager.js';
 const router = express.Router();
 
 // GET /api/carts - Obtener todos los carritos
@@ -44,4 +44,4 @@ router.post('/:cid/product/:pid', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

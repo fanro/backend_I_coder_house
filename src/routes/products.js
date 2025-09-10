@@ -1,5 +1,5 @@
-const express = require('express');
-const { ProductManager } = require('../dao/ProductManager');
+import express from 'express';
+import { ProductManager } from '../dao/ProductManager.js';
 const router = express.Router();
 
 // GET /api/products - Obtener todos los productos
@@ -150,4 +150,4 @@ router.delete('/:pid', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

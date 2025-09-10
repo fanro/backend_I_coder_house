@@ -1,5 +1,5 @@
-const fs = require('fs');
-const { ProductManager } = require('./ProductManager');
+import fs from 'fs';
+import { ProductManager } from './ProductManager.js';
 
 class CartManager {
   static rutaDatos = '';
@@ -77,4 +77,4 @@ class CartManager {
   }
 }
 
-module.exports = { CartManager };
+export { CartManager };

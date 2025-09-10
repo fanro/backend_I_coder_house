@@ -1,14 +1,14 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 // Importar routers específicos
-const productsRouter = require('./products');
-const cartsRouter = require('./carts');
-const filesRouter = require('./files');
+import productsRouter from './products.js';
+import cartsRouter from './carts.js';
+import filesRouter from './files.js';
 
 // Configurar rutas
 router.use('/products', productsRouter);
 router.use('/carts', cartsRouter);
 router.use('/files', filesRouter);
 
-module.exports = router;
+export default router;
