@@ -1,5 +1,6 @@
 import express from 'express';
 import { ProductManager } from './dao/ProductManager.js';
+import { ProductsMongoManager } from './dao/ProductMongoManager.js';
 import { CartManager } from './dao/CartManager.js';
 import { logger } from './middlewares/logger.js';
 import { engine } from 'express-handlebars';
@@ -38,7 +39,7 @@ io.on('connection', async (socket) => {
 
   // lista actual de productos al cliente que se conecta
   try {
-    const productos = await ProductManager.getProducts();
+    const productos = await ProductsMongoManager.getProducts();
     socket.emit('productos-actualizados', productos);
   } catch (error) {
     console.error('Error al cargar productos iniciales:', error);

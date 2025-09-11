@@ -1,11 +1,12 @@
 import express from 'express';
 import { ProductManager } from '../dao/ProductManager.js';
+import { ProductsMongoManager } from '../dao/ProductMongoManager.js';
 const router = express.Router();
 
 // GET /api/products - Obtener todos los productos
 router.get('/', async (req, res) => {
   try {
-    let productos = await ProductManager.getProducts();
+    let productos = await ProductsMongoManager.getProducts();
     res.send(productos);
   } catch (error) {
     return res.status(500).send({ error: error.message });
@@ -75,7 +76,7 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    let nuevoProducto = await ProductManager.addProduct(
+    let nuevoProducto = await ProductsMongoManager.createProduct({
       title,
       description,
       code,
@@ -83,15 +84,15 @@ router.post('/', async (req, res) => {
       status,
       stock,
       category,
-      thumbnails
-    );
+      thumbnails,
+    });
 
     // evento de producto agregado a todos los clientes
     if (req.socket) {
       req.socket.emit('producto-agregado', nuevoProducto);
 
       // También emito la lista actualizada de productos a todos los clientes
-      const productos = await ProductManager.getProducts();
+      const productos = await ProductsMongoManager.getProducts();
       req.socket.emit('productos-actualizados', productos);
     }
 
@@ -105,7 +106,7 @@ router.post('/', async (req, res) => {
 router.put('/:pid', async (req, res) => {
   let camposActualizar = req.body;
   try {
-    let productoActualizado = await ProductManager.updateProduct(
+    let productoActualizado = await ProductsMongoManager.updateProduct(
       req.params.pid,
       camposActualizar
     );
@@ -115,7 +116,7 @@ router.put('/:pid', async (req, res) => {
       req.socket.emit('producto-actualizado', productoActualizado);
 
       // También emito la lista actualizada de productos a todos los clientes
-      const productos = await ProductManager.getProducts();
+      const productos = await ProductsMongoManager.getProducts();
       req.socket.emit('productos-actualizados', productos);
     }
 
@@ -129,18 +130,22 @@ router.put('/:pid', async (req, res) => {
 router.delete('/:pid', async (req, res) => {
   try {
     // Obtener el producto antes de eliminarlo para tener el ID
-    const productoAEliminar = await ProductManager.getProductById(
-      req.params.pid
-    );
+    const productoAEliminar = await ProductsMongoManager.getProductBy({
+      _id: req.params.pid,
+    });
 
-    let resultado = await ProductManager.deleteProduct(req.params.pid);
+    let resultado = await ProductsMongoManager.deleteProduct(req.params.pid);
+
+    if (!resultado) {
+      return res.status(404).send({ error: 'Producto no encontrado' });
+    }
 
     // Emitir evento de producto eliminado a todos los clientes
     if (req.socket) {
-      req.socket.emit('producto-eliminado', productoAEliminar.id);
+      req.socket.emit('producto-eliminado', productoAEliminar._id);
 
       // También emito la lista actualizada de productos a todos los clientes
-      const productos = await ProductManager.getProducts();
+      const productos = await ProductsMongoManager.getProducts();
       req.socket.emit('productos-actualizados', productos);
     }
 
