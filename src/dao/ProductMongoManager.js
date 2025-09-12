@@ -1,26 +1,26 @@
-import { productosModelo } from './models/productsModel.js';
+import { productsModelo } from './models/productsModel.js';
 
 export class ProductsMongoManager {
   static async getProducts() {
-    return await productosModelo.find();
+    return await productsModelo.find().lean();
   }
 
   static async getProductBy(filtro = {}) {
-    return await productosModelo.findOne(filtro); // {color:"green"}
+    return await productsModelo.findOne(filtro).lean(); // {color:"green"}
   }
 
   static async createProduct(product) {
-    return await productosModelo.create(product);
+    return await productsModelo.create(product);
   }
 
   static async updateProduct(id, product) {
-    // return await productosModelo.updateOne({_id: id}, product)
-    // return await productosModelo.findOneAndUpdate({_id:id}, product)
-    return await productosModelo.findByIdAndUpdate(id, product, { new: true });
+    // return await productsModelo.updateOne({_id: id}, product)
+    // return await productsModelo.findOneAndUpdate({_id:id}, product)
+    return await productsModelo.findByIdAndUpdate(id, product, { new: true });
   }
 
   static async deleteProduct(id) {
-    // return await productosModelo.deleteOne({_id: id})
-    return await productosModelo.findByIdAndDelete(id);
+    // return await productsModelo.deleteOne({_id: id})
+    return await productsModelo.findByIdAndDelete(id);
   }
 }
