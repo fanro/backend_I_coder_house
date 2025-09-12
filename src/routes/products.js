@@ -6,12 +6,19 @@ const router = express.Router();
 // GET /api/products - Obtener todos los productos
 router.get('/', async (req, res) => {
   const { limit, page, sort, query } = req.query;
+
+  // Parse query if it's a JSON string
+  let parsedQuery = {};
+  if (query) {
+    parsedQuery = typeof query === 'string' ? JSON.parse(query) : query;
+  }
+
   try {
     let result = await ProductsMongoManager.getProducts(
       limit,
       page,
       sort,
-      query
+      parsedQuery
     );
 
     res.send({
