@@ -23,8 +23,12 @@ router.get('/', async (req, res) => {
       page: productos.page,
       hasPrevPage: productos.hasPrevPage,
       hasNextPage: productos.hasNextPage,
-      prevLink: productos.prevLink,
-      nextLink: productos.nextLink,
+      prevLink: productos.hasPrevPage
+        ? '/api/products?page=' + productos.prevPage
+        : null,
+      nextLink: productos.hasNextPage
+        ? '/api/products?page=' + productos.nextPage
+        : null,
     });
   } catch (error) {
     return res.status(500).send({ status: 'error', error: error.message });
