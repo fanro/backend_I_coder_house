@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   const { limit, page, sort, query } = req.query;
   try {
-    let productos = await ProductsMongoManager.getProducts(
+    let result = await ProductsMongoManager.getProducts(
       limit,
       page,
       sort,
@@ -16,18 +16,18 @@ router.get('/', async (req, res) => {
 
     res.send({
       status: 'success',
-      payload: productos.docs,
-      totalPages: productos.totalPages,
-      prevPage: productos.prevPage,
-      nextPage: productos.nextPage,
-      page: productos.page,
-      hasPrevPage: productos.hasPrevPage,
-      hasNextPage: productos.hasNextPage,
-      prevLink: productos.hasPrevPage
-        ? '/api/products?page=' + productos.prevPage
+      payload: result.docs,
+      totalPages: result.totalPages,
+      prevPage: result.prevPage,
+      nextPage: result.nextPage,
+      page: result.page,
+      hasPrevPage: result.hasPrevPage,
+      hasNextPage: result.hasNextPage,
+      prevLink: result.hasPrevPage
+        ? '/api/products?page=' + result.prevPage
         : null,
-      nextLink: productos.hasNextPage
-        ? '/api/products?page=' + productos.nextPage
+      nextLink: result.hasNextPage
+        ? '/api/products?page=' + result.nextPage
         : null,
     });
   } catch (error) {
