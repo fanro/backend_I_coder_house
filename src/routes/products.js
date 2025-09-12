@@ -5,11 +5,29 @@ const router = express.Router();
 
 // GET /api/products - Obtener todos los productos
 router.get('/', async (req, res) => {
+  const { limit, page, sort, query } = req.query;
   try {
-    let productos = await ProductsMongoManager.getProducts();
-    res.send(productos);
+    let productos = await ProductsMongoManager.getProducts(
+      limit,
+      page,
+      sort,
+      query
+    );
+
+    res.send({
+      status: 'success',
+      payload: productos.docs,
+      totalPages: productos.totalPages,
+      prevPage: productos.prevPage,
+      nextPage: productos.nextPage,
+      page: productos.page,
+      hasPrevPage: productos.hasPrevPage,
+      hasNextPage: productos.hasNextPage,
+      prevLink: productos.prevLink,
+      nextLink: productos.nextLink,
+    });
   } catch (error) {
-    return res.status(500).send({ error: error.message });
+    return res.status(500).send({ status: 'error', error: error.message });
   }
 });
 

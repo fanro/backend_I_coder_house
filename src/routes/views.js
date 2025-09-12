@@ -4,17 +4,15 @@ import { ProductManager } from '../dao/ProductManager.js';
 import { ProductsMongoManager } from '../dao/ProductMongoManager.js';
 
 router.get('/realtimeproducts', async (req, res) => {
-  let productos = [];
-
   try {
-    productos = await ProductsMongoManager.getProducts();
+    let { docs: productos } = await ProductsMongoManager.getProducts();
+    res.render('realTimeProducts', {
+      productos,
+    });
   } catch (error) {
     console.error('Error al obtener productos:', error);
+    res.status(500).send({ error: 'Error al obtener productos' });
   }
-
-  res.render('realTimeProducts', {
-    productos,
-  });
 });
 
 export default router;

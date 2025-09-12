@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import paginate from 'mongoose-paginate-v2';
 
 const schemaCart = new mongoose.Schema(
   {
@@ -19,4 +20,6 @@ const schemaCart = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+schemaCart.plugin(paginate);
 export const cartsModel = mongoose.model('carts', schemaCart);

@@ -39,7 +39,7 @@ io.on('connection', async (socket) => {
 
   // lista actual de productos al cliente que se conecta
   try {
-    const productos = await ProductsMongoManager.getProducts();
+    const { docs: productos } = await ProductsMongoManager.getProducts();
     socket.emit('productos-actualizados', productos);
   } catch (error) {
     console.error('Error al cargar productos iniciales:', error);
