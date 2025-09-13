@@ -57,4 +57,42 @@ router.delete('/:cid/product/:pid', async (req, res) => {
   }
 });
 
+// PUT api/carts/:cid deberá actualizar todos los productos del carrito con un arreglo de productos.
+router.put('/:cid', async (req, res) => {
+  let { cid } = req.params;
+  let { products } = req.body || {};
+
+  if (!products || !Array.isArray(products)) {
+    return res
+      .status(400)
+      .send({ error: 'products es obligatorio y debe ser un arreglo' });
+  }
+
+  try {
+    let cart = await CartMongoManager.updateCartProducts(cid, products);
+    res.send(cart);
+  } catch (error) {
+    return res.status(400).send({ error: error.message });
+  }
+});
+
+// PUT /api/carts/:cid/products/:pid - Actualizar cantidad de producto en el carrito
+router.put('/:cid/product/:pid', async (req, res) => {
+  let { cid, pid } = req.params;
+  let { quantity } = req.body || {};
+
+  if (!quantity || typeof quantity !== 'number' || quantity < 1) {
+    return res.status(400).send({
+      error: 'quantity es obligatorio y debe ser un número mayor a 0',
+    });
+  }
+
+  try {
+    let cart = await CartMongoManager.updateProductQuantity(cid, pid, quantity);
+    res.send(cart);
+  } catch (error) {
+    return res.status(400).send({ error: error.message });
+  }
+});
+
 export default router;

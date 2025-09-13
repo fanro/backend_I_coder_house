@@ -38,6 +38,35 @@ class CartMongoManager {
     await cartsModel.findByIdAndUpdate(cid, cart);
     return cart;
   }
+
+  static async updateProductQuantity(cid, pid, quantity) {
+    let cart = await cartsModel.findById(cid);
+    if (!cart) {
+      throw new Error('Carrito no encontrado');
+    }
+    let productInCart = cart.products.find((p) => p.product.toString() === pid);
+    if (!productInCart) {
+      throw new Error('Producto no encontrado en el carrito');
+    }
+    productInCart.quantity = quantity;
+    await cartsModel.findByIdAndUpdate(cid, cart);
+    return cart;
+  }
+
+  static async updateCartProducts(cid, products) {
+    let cart = await cartsModel.findById(cid);
+    if (!cart) {
+      throw new Error('Carrito no encontrado');
+    }
+    cart.products = products.map((p) => {
+      return {
+        product: p.id,
+        quantity: p.quantity,
+      };
+    });
+    await cartsModel.findByIdAndUpdate(cid, cart);
+    return cart;
+  }
 }
 
 export { CartMongoManager };
