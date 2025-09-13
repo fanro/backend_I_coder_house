@@ -11,6 +11,10 @@ export class ProductsMongoManager {
     });
   }
 
+  static async getProductById(id) {
+    return await productsModel.findById(id).lean();
+  }
+
   static async getProductBy(filtro = {}) {
     return await productsModel.findOne(filtro).lean(); // {color:"green"}
   }
@@ -22,11 +26,13 @@ export class ProductsMongoManager {
   static async updateProduct(id, product) {
     // return await productsModel.updateOne({_id: id}, product)
     // return await productsModel.findOneAndUpdate({_id:id}, product)
-    return await productsModel.findByIdAndUpdate(id, product, { new: true });
+    return await productsModel
+      .findByIdAndUpdate(id, product, { new: true })
+      .lean();
   }
 
   static async deleteProduct(id) {
     // return await productsModel.deleteOne({_id: id})
-    return await productsModel.findByIdAndDelete(id);
+    return await productsModel.findByIdAndDelete(id).lean();
   }
 }
