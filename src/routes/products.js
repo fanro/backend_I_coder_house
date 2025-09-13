@@ -48,6 +48,11 @@ router.get('/:pid', async (req, res) => {
     let producto = await ProductsMongoManager.getProductBy({
       _id: req.params.pid,
     });
+
+    if (!producto) {
+      return res.status(404).send({ error: 'Producto no encontrado' });
+    }
+
     res.send(producto);
   } catch (error) {
     return res.status(404).send({ error: error.message });
