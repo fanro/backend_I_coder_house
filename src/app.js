@@ -15,7 +15,7 @@ import { config } from './config/config.js';
 ProductManager.rutaDatos = './src/data/products.json';
 CartManager.rutaDatos = './src/data/carts.json';
 
-const PORT = 8080;
+const PORT = config.PORT || 3000;
 const app = express();
 
 app.use(express.json());
