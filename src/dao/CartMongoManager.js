@@ -26,7 +26,7 @@ class CartMongoManager {
       cart.products.push({ product: pid, quantity });
     }
     await cartsModel.findByIdAndUpdate(cid, cart);
-    return cart;
+    return await cartsModel.findById(cid).populate('products.product').lean();
   }
 
   static async removeProductFromCart(cid, pid) {
